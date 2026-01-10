@@ -239,8 +239,15 @@ json_validate "$LOCAL_SETTINGS_PATH" || log_warn "Invalid JSON in ${LOCAL_SETTIN
 # Bug #5 fix: set_secure_file logs its own warning, no need to duplicate
 set_secure_file "$LOCAL_SETTINGS_PATH" || true
 
-# Update global user-level ~/.claude/settings.json to ensure CLI picks up MCP (non-destructive merge)
-HOME_CLAUDE_DIR="${HOME}/.claude"
+# Update global user-level Claude config settings.json to ensure CLI picks up MCP (non-destructive merge)
+# Respect CLAUDE_CONFIG_DIR if set, otherwise check for ~/.config/claude (new default) or ~/.claude (legacy)
+if [[ -n "${CLAUDE_CONFIG_DIR:-}" ]]; then
+  HOME_CLAUDE_DIR="${CLAUDE_CONFIG_DIR}"
+elif [[ -d "${HOME}/.config/claude" ]]; then
+  HOME_CLAUDE_DIR="${HOME}/.config/claude"
+else
+  HOME_CLAUDE_DIR="${HOME}/.claude"
+fi
 mkdir -p "$HOME_CLAUDE_DIR"
 HOME_SETTINGS_PATH="${HOME_CLAUDE_DIR}/settings.json"
 
