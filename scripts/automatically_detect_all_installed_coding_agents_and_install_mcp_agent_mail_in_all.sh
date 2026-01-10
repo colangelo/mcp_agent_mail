@@ -18,7 +18,7 @@ require_cmd curl
 
 log_step "MCP Agent Mail: Auto-detect and Integrate with Installed Coding Agents"
 echo
-echo "This will detect local agent configs under ~/.claude, ~/.codex, ~/.cursor, ~/.gemini and generate per-agent MCP configs."
+echo "This will detect local agent configs under ~/.claude (or CLAUDE_CONFIG_DIR), ~/.codex, ~/.cursor, ~/.gemini and generate per-agent MCP configs."
 echo "It will also create scripts/run_server_with_token.sh to start the server with a bearer token."
 echo
 if ! confirm "Proceed?"; then log_warn "Aborted."; exit 1; fi
@@ -118,7 +118,11 @@ if [[ -n "${TARGET_DIR}" ]]; then
   echo "Target project directory: ${TARGET_DIR}"
 fi
 
-HAS_CLAUDE=0; [[ -d "${HOME}/.claude" ]] && HAS_CLAUDE=1
+# Claude: check CLAUDE_CONFIG_DIR, ~/.config/claude (new default), or ~/.claude (legacy)
+HAS_CLAUDE=0
+[[ -n "${CLAUDE_CONFIG_DIR:-}" && -d "${CLAUDE_CONFIG_DIR}" ]] && HAS_CLAUDE=1
+[[ -d "${HOME}/.config/claude" ]] && HAS_CLAUDE=1
+[[ -d "${HOME}/.claude" ]] && HAS_CLAUDE=1
 HAS_CODEX=0;  [[ -d "${HOME}/.codex"  ]] && HAS_CODEX=1
 HAS_CURSOR=0; [[ -d "${HOME}/.cursor" ]] && HAS_CURSOR=1
 HAS_GEMINI=0; [[ -d "${HOME}/.gemini" ]] && HAS_GEMINI=1
