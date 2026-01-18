@@ -253,3 +253,6 @@ tests/benchmarks/regression_reports/
 # Ephemeral files
 a.out
 .beads/.bv.lock
+
+# VS Code
+.vscode/
