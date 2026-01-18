@@ -3,7 +3,8 @@
     "mcp-agent-mail": {
       "type": "http",
       "url": "http://127.0.0.1:8765/mcp/",
-      "headers": { "Authorization": "Bearer YOUR_BEARER_TOKEN" }
+      "headers": { "Authorization": "Bearer e6520e85e8326ea8d19bb205867c44169403525c9619bba11a44dc2471a64483" },
+      "note": "Import or configure this server in Cline's MCP settings"
     }
   }
 }
